@@ -60,7 +60,9 @@ df_total_customers = pd.read_sql("""
 SELECT e.firstName, e.lastName, COUNT(c.customerNumber) AS numpurchasers 
 FROM employees e 
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
-GROUP BY e.employeeNumber;
+JOIN orders o ON c.customerNumber = o.customerNumber 
+GROUP BY e.employeeNumber 
+ORDER BY numpurchasers DESC;
 """, conn)
 
 df_customers = pd.read_sql("""
