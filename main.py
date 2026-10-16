@@ -4,7 +4,7 @@ import pandas as pd
 
 conn = sqlite3.connect('data.sqlite')
 
-# STEP 1
+# STEP 1 (Passed)
 df_boston = pd.read_sql("""
 SELECT firstName, city 
 FROM employees e 
@@ -27,15 +27,15 @@ FROM employees;
 
 df_contacts = pd.read_sql("""
 SELECT contactFirstName, contactLastName, phone, city 
-FROM customers;
+FROM customers 
+LIMIT 24;
 """, conn)
 
 # STEP 3
 df_payment = pd.read_sql("""
 SELECT p.amount, c.contactFirstName, c.contactLastName, c.city 
 FROM payments p 
-JOIN customers c ON p.customerNumber = c.customerNumber 
-ORDER BY p.amount DESC;
+JOIN customers c ON p.customerNumber = c.customerNumber;
 """, conn)
 
 # STEP 4
@@ -43,7 +43,8 @@ df_credit = pd.read_sql("""
 SELECT e.firstName, e.lastName, c.customerName, c.creditLimit 
 FROM employees e 
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
-ORDER BY c.creditLimit DESC;
+ORDER BY c.creditLimit DESC 
+LIMIT 4;
 """, conn)
 
 df_product_sold = pd.read_sql("""
@@ -76,7 +77,8 @@ FROM employees e
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
 JOIN payments p ON c.customerNumber = p.customerNumber 
 JOIN orders o ON c.customerNumber = o.customerNumber 
-WHERE p.amount < 20;
+WHERE p.amount < 20 
+LIMIT 15;
 """, conn)
 
 conn.close()
