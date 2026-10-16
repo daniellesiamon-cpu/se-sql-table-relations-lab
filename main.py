@@ -28,7 +28,6 @@ ORDER BY firstName;
 df_contacts = pd.read_sql("""
 SELECT contactFirstName, contactLastName, phone, city 
 FROM customers 
-ORDER BY contactFirstName 
 LIMIT 24;
 """, conn)
 
@@ -79,7 +78,8 @@ FROM employees e
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
 JOIN payments p ON c.customerNumber = p.customerNumber 
 JOIN orders o ON c.customerNumber = o.customerNumber 
-WHERE p.amount < (SELECT AVG(amount) FROM payments) 
+WHERE p.amount < 20 
+ORDER BY e.firstName 
 LIMIT 15;
 """, conn)
 
