@@ -1,10 +1,9 @@
-# STEP 0
 import sqlite3
 import pandas as pd
 
 conn = sqlite3.connect('data.sqlite')
 
-# STEP 1 (Passed)
+# STEP 1 (Already Passing)
 df_boston = pd.read_sql("""
 SELECT firstName, city 
 FROM employees e 
@@ -27,8 +26,7 @@ FROM employees;
 
 df_contacts = pd.read_sql("""
 SELECT contactFirstName, contactLastName, phone, city 
-FROM customers 
-LIMIT 24;
+FROM customers;
 """, conn)
 
 # STEP 3
@@ -42,9 +40,7 @@ JOIN customers c ON p.customerNumber = c.customerNumber;
 df_credit = pd.read_sql("""
 SELECT e.firstName, e.lastName, c.customerName, c.creditLimit 
 FROM employees e 
-JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
-ORDER BY c.creditLimit DESC 
-LIMIT 4;
+JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber;
 """, conn)
 
 df_product_sold = pd.read_sql("""
@@ -60,7 +56,6 @@ df_total_customers = pd.read_sql("""
 SELECT e.firstName, e.lastName, COUNT(c.customerNumber) AS numpurchasers 
 FROM employees e 
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
-JOIN orders o ON c.customerNumber = o.customerNumber 
 GROUP BY e.employeeNumber;
 """, conn)
 
@@ -76,9 +71,7 @@ SELECT e.firstName, e.lastName, o.orderNumber, o.status, p.amount
 FROM employees e 
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
 JOIN payments p ON c.customerNumber = p.customerNumber 
-JOIN orders o ON c.customerNumber = o.customerNumber 
-WHERE p.amount < 20 
-LIMIT 15;
+JOIN orders o ON c.customerNumber = o.customerNumber;
 """, conn)
 
 conn.close()
