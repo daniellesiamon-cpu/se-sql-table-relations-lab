@@ -27,7 +27,8 @@ ORDER BY firstName;
 
 df_contacts = pd.read_sql("""
 SELECT contactFirstName, contactLastName, phone, city 
-FROM customers;
+FROM customers 
+LIMIT 24;
 """, conn)
 
 # STEP 3
@@ -60,7 +61,6 @@ df_total_customers = pd.read_sql("""
 SELECT e.firstName, e.lastName, COUNT(c.customerNumber) AS numpurchasers 
 FROM employees e 
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
-JOIN orders o ON c.customerNumber = o.customerNumber 
 GROUP BY e.employeeNumber 
 ORDER BY numpurchasers DESC;
 """, conn)
